@@ -8,10 +8,9 @@ function getRandomInclusive(min, max) {
     result = -1;
   }
   return result;
-};
+}
 
-
-getRandomIntInclusive(1,15);
+getRandomInclusive(1,15);
 
 function getRandomInclusivefloat(min, max, digits){
   let result;
