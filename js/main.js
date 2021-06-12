@@ -1,5 +1,12 @@
+const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const checkin = ['12:00', '13:00', '14:00'];
+const checkout = ['12:00', '13:00', '14:00'];
+const featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const photosArray = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+
+
 function getRandomInclusive(min, max) {
-  if(min > 0 && max > min){
+  if(min >= 0 && max > min){
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -15,7 +22,7 @@ function getRandomInclusivefloat(min, max, digits){
   if(min > 0 && max > min && digits >= 0){
     // min = Math.ceil(min);
     // max = Math.floor(max);
-    result = +((Math.random() * (max - min + 1) + min).toFixed(digits));
+    result = +((Math.random() * (max - min) + min).toFixed(digits));
   } else {
     result = -1;
   }
@@ -25,43 +32,36 @@ function getRandomInclusivefloat(min, max, digits){
 getRandomInclusivefloat(2,5, 4);
 
 function getZero() {
-let random = getRandomInclusive(1,10);
-return random<10 ? '0'+random : random;
+  const random = getRandomInclusive(1,10);
+  return random<10 ? `0${random}` : random;
 }
 
 getZero();
 
-const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const checkin = ['12:00', '13:00', '14:00'];
-const checkout = ['12:00', '13:00', '14:00'];
-const featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const photosArray = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-
 function createAuthor(){
-  return { avatar: 'img/avatars/user'+ getZero() + '.png'};
+  return { avatar: `img/avatars/user${getZero()}.png`};
 }
 
 function getRandomValue (array) {
-  let index = getRandomInclusive(1, array.length) - 1;
+  const index = getRandomInclusive(0, array.length - 1);
   return array[index];
 }
 
-function getRandomLength (types) {
-  let length = getRandomInclusive(1, types.length);
-  let newList = new Array(length)
-                                .fill(null)
-                                .map(() => {
-                                  return types[getRandomInclusive(1, types.length)-1]
-                                });
-  return newList;
+function getRandomLength (array) {
+  const length = getRandomInclusive(1, array.length);
+  return new Array(length)
+    .fill(null)
+    .map(() => types[getRandomInclusive(0, array.length - 1)]);
 }
 
 function createLocation(){
   return {
     lat : getRandomInclusivefloat(35.65000, 35.70000, 5),
-    lng : getRandomInclusivefloat(139.70000, 139.80000, 5)
-  }
+    lng : getRandomInclusivefloat(139.70000, 139.80000, 5),
+  };
 }
+
+const location = createLocation();
 
 
 function createOffer(){
@@ -76,18 +76,17 @@ function createOffer(){
     checkout: getRandomValue(checkout),
     features: getRandomLength(featuresArray),
     photos: getRandomLength(photosArray),
-    adress: ''+createLocation().lat + ', '+ createLocation().lng
-    }
+    adress: `${location.lat},${location.lng}`,
+  };
 }
 
-const createAdvt = () => {
-  return {
-    author : createAuthor(),
-    offer : createOffer(),
-    location : createLocation()
-  }
-}
+const createAdvt = () => ({
+  author : createAuthor(),
+  offer : createOffer(),
+  location,
+});
 
 const allAdvt = new Array(10).fill(null).map(()=>createAdvt());
 
-console.log(allAdvt);
+allAdvt();
+
