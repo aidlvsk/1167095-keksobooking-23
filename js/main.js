@@ -17,11 +17,9 @@ function getRandomInclusive(min, max) {
 
 getRandomInclusive(1,15);
 
-function getRandomInclusivefloat(min, max, digits){
+function getRandomInclusiveFloat(min, max, digits){
   let result;
   if(min > 0 && max > min && digits >= 0){
-    // min = Math.ceil(min);
-    // max = Math.floor(max);
     result = +((Math.random() * (max - min) + min).toFixed(digits));
   } else {
     result = -1;
@@ -29,7 +27,7 @@ function getRandomInclusivefloat(min, max, digits){
   return result > max ? max : result;
 }
 
-getRandomInclusivefloat(2,5, 4);
+getRandomInclusiveFloat(2,5, 4);
 
 function getZero() {
   const random = getRandomInclusive(1,10);
@@ -51,20 +49,17 @@ function getRandomLength (array) {
   const length = getRandomInclusive(1, array.length);
   return new Array(length)
     .fill(null)
-    .map(() => types[getRandomInclusive(0, array.length - 1)]);
+    .map(() => array[getRandomInclusive(0, array.length - 1)]);
 }
 
 function createLocation(){
   return {
-    lat : getRandomInclusivefloat(35.65000, 35.70000, 5),
-    lng : getRandomInclusivefloat(139.70000, 139.80000, 5),
+    lat : getRandomInclusiveFloat(35.65000, 35.70000, 5),
+    lng : getRandomInclusiveFloat(139.70000, 139.80000, 5),
   };
 }
 
-const location = createLocation();
-
-
-function createOffer(){
+function createOffer(location){
   return {
     title: 'Уютные аппартаменты с котом',
     price: getRandomInclusive(1,Number.MAX_SAFE_INTEGER),
@@ -76,17 +71,22 @@ function createOffer(){
     checkout: getRandomValue(checkout),
     features: getRandomLength(featuresArray),
     photos: getRandomLength(photosArray),
-    adress: `${location.lat},${location.lng}`,
+    address: `${location.lat},${location.lng}`,
   };
 }
 
-const createAdvt = () => ({
-  author : createAuthor(),
-  offer : createOffer(),
-  location,
-});
+const createAdvt = () => {
+  const location = createLocation();
 
-const allAdvt = new Array(10).fill(null).map(()=>createAdvt());
+  return {
+    author : createAuthor(),
+    offer : createOffer(location),
+    location: location,
+  };
+};
 
-allAdvt();
+function allAdvt(count) {
+  return new Array(count).fill(null).map(()=>createAdvt());
+}
 
+allAdvt(10);
