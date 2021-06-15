@@ -3,9 +3,8 @@ function getRandomInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  } else {
-    return -1;
   }
+  return -1;
 }
 
 function getRandomInclusiveFloat(min, max, digits){

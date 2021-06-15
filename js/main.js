@@ -1,4 +1,4 @@
-import {createAuthor, createLocation, createOffer} from '../js/creators.js';
+import {createAuthor, createLocation, createOffer} from './creators.js';
 
 const createAdvt = () => {
   const location = createLocation();
