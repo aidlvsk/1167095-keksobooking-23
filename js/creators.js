@@ -1,5 +1,5 @@
-import {getRandomInclusive, getRandomInclusiveFloat, getRandomValue, getRandomLength} from '../js/utils.js';
-import {types, checkin, checkout, featuresArray, photosArray} from '../js/constants.js';
+import {getRandomInclusive, getRandomInclusiveFloat, getRandomValue, getRandomLength} from './utils.js';
+import {types, checkin, checkout, featuresArray, photosArray} from './constants.js';
 
 function getZero() {
   const random = getRandomInclusive(1,10);
@@ -29,7 +29,7 @@ function createOffer(location){
     checkout: getRandomValue(checkout),
     features: getRandomLength(featuresArray),
     photos: getRandomLength(photosArray),
-    address: `${location.lat},${location.lng}`,
+    address: `${location.lat}, ${location.lng}`,
   };
 }
 
