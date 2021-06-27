@@ -28,7 +28,6 @@ function createCard(card) {
     photoTemplate.remove();
     return photosList;
   };
-
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
   if (card.offer.title === ''){
     cardElement.querySelector('.popup__title').classList.add('hidden');
@@ -38,7 +37,7 @@ function createCard(card) {
     cardElement.querySelector('.popup__text--address').classList.add('hidden');
   }
   cardElement.querySelector('.popup__text--price').textContent =  `${card.offer.price} ₽/ночь`;
-  if(!card.offer.price === Number){
+  if(typeof card.offer.price !== 'number'){
     cardElement.querySelector('.popup__text--price').classList.add('hidden');
   }
   cardElement.querySelector('.popup__type').textContent = typesName[card.offer.type];
@@ -46,11 +45,11 @@ function createCard(card) {
     cardElement.querySelector('.popup__type').classList.add('hidden');
   }
   cardElement.querySelector('.popup__text--capacity').textContent = `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`;
-  if(!card.offer.rooms === Number || !card.offer.guests === Number){
+  if(typeof card.offer.rooms !== 'number' || typeof card.offer.guests !== 'number'){
     cardElement.querySelector('.popup__text--capacity').classList.add('hidden');
   }
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`;
-  if(!card.offer.checkin === Number || !card.offer.checkout === Number){
+  if( typeof card.offer.checkin !== 'number' || typeof card.offer.checkout !== 'number'){
     cardElement.querySelector('.popup__text--time').classList.add('hidden');
   }
   allFeatures.querySelectorAll('.popup__feature').forEach((item)=>{
