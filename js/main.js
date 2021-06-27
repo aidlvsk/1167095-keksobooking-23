@@ -1,17 +1,10 @@
-import {createAuthor, createLocation, createOffer} from './creators.js';
-
-const createAdvt = () => {
-  const location = createLocation();
-
-  return {
-    author : createAuthor(),
-    offer : createOffer(location),
-    location: location,
-  };
-};
+import {createAdvt} from './creators.js';
+import './generate.js';
+import {noActiveForm} from './formActivation.js';
 
 function allAdvt(count) {
   return new Array(count).fill(null).map(()=>createAdvt());
 }
 
 allAdvt(10);
+noActiveForm();

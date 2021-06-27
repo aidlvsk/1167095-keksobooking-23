@@ -33,4 +33,14 @@ function createOffer(location){
   };
 }
 
-export {getZero, createAuthor, createLocation, createOffer};
+const createAdvt = () => {
+  const location = createLocation();
+
+  return {
+    author : createAuthor(),
+    offer : createOffer(location),
+    location: location,
+  };
+};
+
+export {getZero, createAuthor, createLocation, createOffer, createAdvt};
