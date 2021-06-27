@@ -28,4 +28,3 @@ const activeForm = function() {
 };
 
 export {noActiveForm, activeForm};
-
