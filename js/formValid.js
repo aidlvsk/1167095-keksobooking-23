@@ -10,7 +10,20 @@ const timeOutInput = formInputs.querySelector('#timeout');
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE_VALUE = 1000000;
-let minPrice = 0;
+const MIN_PRICES = {
+  bungalow : 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+// const FLATS_ROOMS = {
+//   1: [1],
+//   2: [1, 2],
+//   3: [1, 2, 3],
+//   100: [0],
+// };
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -28,7 +41,7 @@ titleInput.addEventListener('input', () => {
 priceInput.addEventListener('input', () => {
   if(priceInput.value > MAX_PRICE_VALUE){
     priceInput.setCustomValidity('Укажите цену до 1 млн');
-  } else if(priceInput.value < minPrice){
+  } else if(priceInput.value < priceInput.min){
     priceInput.setCustomValidity('Укажите цену больше минимального значения');
   }
   else {
@@ -37,65 +50,58 @@ priceInput.addEventListener('input', () => {
   priceInput.reportValidity();
 });
 
-roomNumberInput.addEventListener('change', () => {
-  const roomsNumber = roomNumberInput.value;
+const getGuestNumber = function(evt){
+  const roomsNumber = evt.target.value;
   Array.from(guestsNumberInput.children).forEach((element) => {
     if (roomsNumber === '100') {
       if (element.value !== '0') {
         element.setAttribute('disabled', 'disabled');
+        element.removeAttribute('selected');
       } else {
         element.removeAttribute('disabled');
+        element.setAttribute('selected', true);
       }
-
       return;
     }
 
     if (roomsNumber < element.value || element.value === '0') {
       element.setAttribute('disabled', 'disabled');
+      element.removeAttribute('selected');
     } else {
       element.removeAttribute('disabled');
+      element.setAttribute('selected', true);
     }
   });
-});
+};
+
+roomNumberInput.addEventListener('change', getGuestNumber);
 
 typeInput.addEventListener('change', (evt) => {
   if(evt.target.value === 'bungalow') {
-    minPrice = 0;
-    priceInput.placeholder = '0';
+    priceInput.min = MIN_PRICES[evt.target.value];
+    priceInput.placeholder = MIN_PRICES[evt.target.value];
   } else if(evt.target.value === 'flat') {
-    minPrice = 1000;
-    priceInput.placeholder = '1000';
+    priceInput.min = MIN_PRICES[evt.target.value];
+    priceInput.placeholder = MIN_PRICES[evt.target.value];
   } else if(evt.target.value === 'hotel') {
-    minPrice = 3000;
-    priceInput.placeholder = '3000';
+    priceInput.min = MIN_PRICES[evt.target.value];
+    priceInput.placeholder = MIN_PRICES[evt.target.value];
   } else if(evt.target.value === 'house') {
-    minPrice = 5000;
-    priceInput.placeholder = '5000';
+    priceInput.min = MIN_PRICES[evt.target.value];
+    priceInput.placeholder = MIN_PRICES[evt.target.value];
   } else if(evt.target.value === 'palace') {
-    minPrice = 10000;
-    priceInput.placeholder = '10000';
+    priceInput.min = MIN_PRICES[evt.target.value];
+    priceInput.placeholder = MIN_PRICES[evt.target.value];
   } else {
-    minPrice = 0;
+    priceInput.min = 0;
     priceInput.placeholder = '';
   }
 });
 
-// timeInInput.addEventListener('change', () => {
-//   const time = timeInInput.value;
-//   Array.from(timeOutInput.children).forEach((element) => {
-//     if(time === element.value) {
-//       element.setAttribute('selected', 'selected');
-//     } else {
-//       element.setAttribute('disabled', 'disabled');
-//     }
-//   });
-// });
-
 timeInInput.addEventListener('change', () => {
-  const time = timeInInput.value;
-  Array.from(timeOutInput.children).forEach((element) => {
-    if(time === element.value) {
-      timeOutInput.value = element.value;
-    }
-  });
+  timeOutInput.value = timeInInput.value;
+});
+
+timeOutInput.addEventListener('change', () => {
+  timeInInput.value = timeOutInput.value;
 });
