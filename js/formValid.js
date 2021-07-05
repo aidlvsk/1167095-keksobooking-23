@@ -50,8 +50,8 @@ priceInput.addEventListener('input', () => {
   priceInput.reportValidity();
 });
 
-const getGuestNumber = function(evt){
-  const roomsNumber = evt.target.value;
+const getGuestNumber = function(){
+  const roomsNumber = roomNumberInput.value;
   Array.from(guestsNumberInput.children).forEach((element) => {
     if (roomsNumber === '100') {
       if (element.value !== '0') {
@@ -59,7 +59,7 @@ const getGuestNumber = function(evt){
         element.removeAttribute('selected');
       } else {
         element.removeAttribute('disabled');
-        element.setAttribute('selected', true);
+        guestsNumberInput.value = element.value;
       }
       return;
     }
@@ -69,33 +69,17 @@ const getGuestNumber = function(evt){
       element.removeAttribute('selected');
     } else {
       element.removeAttribute('disabled');
-      element.setAttribute('selected', true);
+      guestsNumberInput.value = element.value;
     }
   });
 };
 
+getGuestNumber();
 roomNumberInput.addEventListener('change', getGuestNumber);
 
 typeInput.addEventListener('change', (evt) => {
-  if(evt.target.value === 'bungalow') {
-    priceInput.min = MIN_PRICES[evt.target.value];
-    priceInput.placeholder = MIN_PRICES[evt.target.value];
-  } else if(evt.target.value === 'flat') {
-    priceInput.min = MIN_PRICES[evt.target.value];
-    priceInput.placeholder = MIN_PRICES[evt.target.value];
-  } else if(evt.target.value === 'hotel') {
-    priceInput.min = MIN_PRICES[evt.target.value];
-    priceInput.placeholder = MIN_PRICES[evt.target.value];
-  } else if(evt.target.value === 'house') {
-    priceInput.min = MIN_PRICES[evt.target.value];
-    priceInput.placeholder = MIN_PRICES[evt.target.value];
-  } else if(evt.target.value === 'palace') {
-    priceInput.min = MIN_PRICES[evt.target.value];
-    priceInput.placeholder = MIN_PRICES[evt.target.value];
-  } else {
-    priceInput.min = 0;
-    priceInput.placeholder = '';
-  }
+  priceInput.min = MIN_PRICES[evt.target.value];
+  priceInput.placeholder = MIN_PRICES[evt.target.value];
 });
 
 timeInInput.addEventListener('change', () => {
