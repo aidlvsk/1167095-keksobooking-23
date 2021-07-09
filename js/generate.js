@@ -1,7 +1,6 @@
 import {createAdvt} from './creators.js';
 
 const advtTemplate = document.querySelector('#card').content.querySelector('.popup');
-const userAdvt = document.querySelector('#map-canvas');
 
 const typesName = {
   palace : 'Дворец',
@@ -78,5 +77,6 @@ function createCard(card) {
 
 const newCard = createCard(similarAdvt);
 
-userAdvt.appendChild(newCard);
+export {newCard, createCard};
+
 
