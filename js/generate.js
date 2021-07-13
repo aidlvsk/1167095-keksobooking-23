@@ -15,7 +15,9 @@ const similarAdvt = createAdvt();
 function createCard(card) {
   const cardElement = advtTemplate.cloneNode(true);
   const allFeatures = cardElement.querySelector('.popup__features');
-  const modifiers = card.offer.features.map((feature) => `popup__feature--${feature}`);
+  const modifiers = card.offer.features ?
+    card.offer.features.map((feature) => `popup__feature--${feature}`) :
+    [];
   const photosList = cardElement.querySelector('.popup__photos');
   const photoTemplate = photosList.querySelector('.popup__photo');
   const all = function(elements) {
@@ -57,16 +59,17 @@ function createCard(card) {
       item.remove();
     }
   });
-  if(card.offer.features.length === 0) {
+  if(!card.offer.features || card.offer.features.length === 0) {
     allFeatures.classList.add('hidden');
   }
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   if(card.offer.description === ''){
     cardElement.querySelector('.popup__description').classList.add('hidden');
   }
-  all(card.offer.photos);
-  if(card.offer.photos.length === 0){
+  if(!card.offer.photos || card.offer.photos.length === 0){
     photosList.classList.add('hidden');
+  }else {
+    all(card.offer.photos);
   }
   cardElement.querySelector('.popup__avatar').src = card.author.avatar;
   if(card.author.avatar === '') {

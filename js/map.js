@@ -1,8 +1,9 @@
-import {createAdvt} from './creators.js';
 import {createCard} from './generate.js';
 import {noActiveForm, activeForm} from './formActivation.js';
+import {getData} from './data.js';
 
 const address = document.querySelector('#address');
+const errorMap = document.querySelector('.error__message--map');
 
 noActiveForm();
 
@@ -51,7 +52,6 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const pointsGroup = L.layerGroup().addTo(map);
-const points = Array(10).fill(null).map(createAdvt);
 const pointsIcon = L.icon ({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -73,7 +73,13 @@ const createMarker = (point) => {
     );
 };
 
-points.forEach((point) => {
-  createMarker(point);
-});
+getData()
+  .then((points) => {
+    points.forEach((point) => {
+      createMarker(point);
+    });
+  })
+  .catch(() => {
+    errorMap.classList.remove('visually-hidden');
+  });
 
