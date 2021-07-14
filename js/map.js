@@ -2,8 +2,14 @@ import {createCard} from './generate.js';
 import {noActiveForm, activeForm} from './formActivation.js';
 import {getData} from './data.js';
 
+const POINT_DEFAULT = {
+  lat: 35.71462,
+  lng: 139.81776,
+};
+
 const address = document.querySelector('#address');
 const errorMap = document.querySelector('.error__message--map');
+
 
 noActiveForm();
 
@@ -11,10 +17,7 @@ const map = L.map('map-canvas')
   .on('load', () => {
     activeForm();
   })
-  .setView({
-    lat: 35.71462,
-    lng: 139.81776,
-  }, 10);
+  .setView(POINT_DEFAULT, 10);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -82,4 +85,6 @@ getData()
   .catch(() => {
     errorMap.classList.remove('visually-hidden');
   });
+
+export {POINT_DEFAULT, mainMarker};
 
