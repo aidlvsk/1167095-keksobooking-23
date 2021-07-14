@@ -1,8 +1,15 @@
-import {createAdvt} from './creators.js';
 import {createCard} from './generate.js';
 import {noActiveForm, activeForm} from './formActivation.js';
+import {getData} from './data.js';
+
+const POINT_DEFAULT = {
+  lat: 35.71462,
+  lng: 139.81776,
+};
 
 const address = document.querySelector('#address');
+const errorMap = document.querySelector('.error__message--map');
+
 
 noActiveForm();
 
@@ -10,10 +17,7 @@ const map = L.map('map-canvas')
   .on('load', () => {
     activeForm();
   })
-  .setView({
-    lat: 35.71462,
-    lng: 139.81776,
-  }, 10);
+  .setView(POINT_DEFAULT, 10);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -51,7 +55,6 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const pointsGroup = L.layerGroup().addTo(map);
-const points = Array(10).fill(null).map(createAdvt);
 const pointsIcon = L.icon ({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -73,7 +76,15 @@ const createMarker = (point) => {
     );
 };
 
-points.forEach((point) => {
-  createMarker(point);
-});
+getData()
+  .then((points) => {
+    points.forEach((point) => {
+      createMarker(point);
+    });
+  })
+  .catch(() => {
+    errorMap.classList.remove('visually-hidden');
+  });
+
+export {POINT_DEFAULT, mainMarker};
 

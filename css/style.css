@@ -1007,6 +1007,16 @@ fieldset {
   opacity: 0.6;
 }
 
+.error__message--map {
+  position: absolute;
+  top: 50%;
+  left: auto;
+  background-color: red;
+  z-index: 10000;
+  padding: 20px;
+  color: white;
+}
+
 .visually-hidden {
   position: absolute;
 
