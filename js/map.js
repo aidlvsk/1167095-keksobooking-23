@@ -1,15 +1,17 @@
 import {createCard} from './generate.js';
 import {noActiveForm, activeForm} from './formActivation.js';
 import {getData} from './data.js';
+import {debounce} from './utils/debounce.js';
+import {filterAndSortPoints} from './filters.js';
 
 const POINT_DEFAULT = {
   lat: 35.71462,
   lng: 139.81776,
 };
 
+const formFilter = document.querySelector('.map__filters');
 const address = document.querySelector('#address');
 const errorMap = document.querySelector('.error__message--map');
-
 
 noActiveForm();
 
@@ -74,17 +76,30 @@ const createMarker = (point) => {
     .bindPopup(
       createCard(point), {keepInView: true},
     );
+  return marker;
 };
+
+let markers  = [];
+let rawPoints = [];
+
+const FILTER_DELAY = 500;
+const drawMarkers = debounce(() => {
+  markers.forEach((marker) => marker.remove());
+
+  markers = filterAndSortPoints(rawPoints)
+    .map((point) => createMarker(point));
+}, FILTER_DELAY);
+
+formFilter.addEventListener('change', drawMarkers);
 
 getData()
   .then((points) => {
-    points.forEach((point) => {
-      createMarker(point);
-    });
+    rawPoints = points;
+
+    drawMarkers();
   })
   .catch(() => {
     errorMap.classList.remove('visually-hidden');
   });
 
-export {POINT_DEFAULT, mainMarker};
-
+export {POINT_DEFAULT, mainMarker, createMarker};
