@@ -1,6 +1,8 @@
 import {createCard} from './generate.js';
 import {noActiveForm, activeForm} from './formActivation.js';
 import {getData} from './data.js';
+import {comparePoints} from './filters.js';
+import {debounce} from './utils/debounce.js';
 
 const POINT_DEFAULT = {
   lat: 35.71462,
@@ -74,13 +76,52 @@ const createMarker = (point) => {
     .bindPopup(
       createCard(point), {keepInView: true},
     );
+  return marker;
 };
+
+let rawPoints = [];
+let markers  = [];
+
+
+const formFilter = document.querySelector('.map__filters');
+const houseTypeInput = formFilter.querySelector('#housing-type');
+const housePriceInput = formFilter.querySelector('#housing-price');
+const houseRoomsInput = formFilter.querySelector('#housing-rooms');
+const houseGuestsInput = formFilter.querySelector('#housing-guests');
+
+const POINTS_COUNT = 10;
+const PRICE_RANGES = {
+  'low' : {min: 0, max: 10000},
+  'middle' : {min: 10000, max: 50000},
+  'high' : {min: 50000, max: Number.MAX_SAFE_INTEGER},
+};
+
+function filterAndSortPoints() {
+  markers.forEach((marker) => marker.remove());
+  markers =  rawPoints
+    .filter((item) => {
+      const isCorrectType = houseTypeInput.value === 'any' || item.offer.type === houseTypeInput.value;
+      const isCorrectPrice = housePriceInput.value === 'any' ||
+        PRICE_RANGES[housePriceInput.value].min <= item.offer.price && item.offer.price < PRICE_RANGES[housePriceInput.value].max;
+      const isCorrectRooms = item.offer.rooms.toString() === houseRoomsInput.value || houseRoomsInput.value === 'any';
+      const isCorrectGuests = item.offer.guests.toString() === houseGuestsInput.value || houseGuestsInput.value === 'any';
+      return isCorrectType && isCorrectPrice && isCorrectRooms && isCorrectGuests;
+    })
+    .sort(comparePoints)
+    .slice(0, POINTS_COUNT)
+    .map((point) => createMarker(point));
+}
+
+const FILTER_DELAY = 500;
+const debouncedFilterAndSortPoints = debounce(filterAndSortPoints, FILTER_DELAY);
+
+formFilter.addEventListener('change', debouncedFilterAndSortPoints);
 
 getData()
   .then((points) => {
-    points.forEach((point) => {
-      createMarker(point);
-    });
+    rawPoints = points;
+
+    debouncedFilterAndSortPoints(123);
   })
   .catch(() => {
     errorMap.classList.remove('visually-hidden');
