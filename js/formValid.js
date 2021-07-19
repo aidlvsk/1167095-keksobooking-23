@@ -18,13 +18,6 @@ const MIN_PRICES = {
   palace: 10000,
 };
 
-// const FLATS_ROOMS = {
-//   1: [1],
-//   2: [1, 2],
-//   3: [1, 2, 3],
-//   100: [0],
-// };
-
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
   if(valueLength < MIN_TITLE_LENGTH) {

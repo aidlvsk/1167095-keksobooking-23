@@ -1,5 +1,5 @@
 import {createCard} from './generate.js';
-import {noActiveForm, activeForm} from './formActivation.js';
+import {getNoActiveForm, getActiveForm} from './formActivation.js';
 import {getData} from './data.js';
 
 const POINT_DEFAULT = {
@@ -11,11 +11,11 @@ const address = document.querySelector('#address');
 const errorMap = document.querySelector('.error__message--map');
 
 
-noActiveForm();
+getNoActiveForm();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    activeForm();
+    getActiveForm();
   })
   .setView(POINT_DEFAULT, 10);
 

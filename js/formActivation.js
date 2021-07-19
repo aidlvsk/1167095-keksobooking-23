@@ -4,7 +4,7 @@ const mapFilters = document.querySelector('.map__filters');
 const mapFiltersElements = mapFilters.querySelectorAll('.map__filter');
 
 
-const noActiveForm = function(){
+const getNoActiveForm = function(){
   adForm.classList.add('ad-form--disabled');
   adFormElements.forEach((item) => {
     item.setAttribute('disabled', 'disabled');
@@ -16,7 +16,7 @@ const noActiveForm = function(){
   });
 };
 
-const activeForm = function() {
+const getActiveForm = function() {
   adForm.classList.remove('ad-form--disabled');
   adFormElements.forEach((item) => {
     item.removeAttribute('disabled');
@@ -27,4 +27,4 @@ const activeForm = function() {
   });
 };
 
-export {noActiveForm, activeForm};
+export {getNoActiveForm, getActiveForm};

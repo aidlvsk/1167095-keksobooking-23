@@ -80,11 +80,3 @@ newSuccess.addEventListener('click', () => {
   newSuccess.classList.add('visually-hidden');
 });
 
-// const formInputs = adForm.getElementsByTagName('input');
-
-// clearFormButton.addEventListener('click', () => {
-//   Array.from(formInputs).forEach((element) => {
-//     if(element.id !== 'address'){element.value = '';}
-//   });
-// });
-
