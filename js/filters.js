@@ -1,3 +1,10 @@
+const POINTS_COUNT = 10;
+const PRICE_RANGES = {
+  'low' : {min: 0, max: 10000},
+  'middle' : {min: 10000, max: 50000},
+  'high' : {min: 50000, max: Number.MAX_SAFE_INTEGER},
+};
+
 const formFilter = document.querySelector('.map__filters');
 const houseTypeInput = formFilter.querySelector('#housing-type');
 const housePriceInput = formFilter.querySelector('#housing-price');
@@ -44,13 +51,6 @@ const comparePoints = (pointA, pointB) => {
   const rankB = getPointRank(pointB);
 
   return rankB - rankA;
-};
-
-const POINTS_COUNT = 10;
-const PRICE_RANGES = {
-  'low' : {min: 0, max: 10000},
-  'middle' : {min: 10000, max: 50000},
-  'high' : {min: 50000, max: Number.MAX_SAFE_INTEGER},
 };
 
 const checkPoint = (item) => {

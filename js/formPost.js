@@ -1,4 +1,4 @@
-import {POINT_DEFAULT, mainMarker} from './map.js';
+import {POINT_DEFAULT, mainMarker, drawMarkers} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const filter = document.querySelector('.map__filters');
@@ -24,6 +24,7 @@ const resetForm = () => {
   priceInput.min = 1000;
   address.value = `${POINT_DEFAULT.lat}, ${POINT_DEFAULT.lng}`;
 
+  drawMarkers();
   mainMarker
     .setLatLng({
       lat: POINT_DEFAULT.lat,

@@ -1,8 +1,10 @@
 import {createCard} from './generate.js';
-import {getNoActiveForm, getActiveForm} from './formActivation.js';
+import {getNoActiveForm, getActiveForm, getActiveFiltersForm} from './formActivation.js';
 import {getData} from './data.js';
 import {debounce} from './utils/debounce.js';
 import {filterAndSortPoints} from './filters.js';
+
+const DRAW_DELAY = 500;
 
 const POINT_DEFAULT = {
   lat: 35.71462,
@@ -13,13 +15,13 @@ const formFilter = document.querySelector('.map__filters');
 const address = document.querySelector('#address');
 const errorMap = document.querySelector('.error__message--map');
 
-getNoActiveForm();
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    getActiveForm();
-  })
-  .setView(POINT_DEFAULT, 10);
+const map = L.map('map-canvas');
+const pointsGroup = L.layerGroup().addTo(map);
+const pointsIcon = L.icon ({
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -56,13 +58,6 @@ mainMarker.on('moveend', (evt) => {
   address.value = `${dot.lat.toFixed(5)} , ${dot.lng.toFixed(5)}`;
 });
 
-const pointsGroup = L.layerGroup().addTo(map);
-const pointsIcon = L.icon ({
-  iconUrl: './img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
 const createMarker = (point) => {
   const marker = L.marker({
     lat : point.location.lat,
@@ -82,24 +77,31 @@ const createMarker = (point) => {
 let markers  = [];
 let rawPoints = [];
 
-const FILTER_DELAY = 500;
 const drawMarkers = debounce(() => {
   markers.forEach((marker) => marker.remove());
 
   markers = filterAndSortPoints(rawPoints)
     .map((point) => createMarker(point));
-}, FILTER_DELAY);
+}, DRAW_DELAY);
 
-formFilter.addEventListener('change', drawMarkers);
+getNoActiveForm();
 
-getData()
-  .then((points) => {
-    rawPoints = points;
+map
+  .on('load', () => {
+    getActiveForm();
 
-    drawMarkers();
+    getData()
+      .then((points) => {
+        rawPoints = points;
+
+        drawMarkers();
+        getActiveFiltersForm();
+        formFilter.addEventListener('change', drawMarkers);
+      })
+      .catch(() => {
+        errorMap.classList.remove('visually-hidden');
+      });
   })
-  .catch(() => {
-    errorMap.classList.remove('visually-hidden');
-  });
+  .setView(POINT_DEFAULT, 10);
 
-export {POINT_DEFAULT, mainMarker, createMarker};
+export {POINT_DEFAULT, mainMarker, createMarker, drawMarkers};

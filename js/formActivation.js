@@ -21,10 +21,12 @@ const getActiveForm = function() {
   adFormElements.forEach((item) => {
     item.removeAttribute('disabled');
   });
+};
+const getActiveFiltersForm = function() {
   mapFilters.classList.remove('map__filters--disabled');
   mapFiltersElements.forEach((item) => {
     item.removeAttribute('disabled');
   });
 };
 
-export {getNoActiveForm, getActiveForm};
+export {getNoActiveForm, getActiveForm, getActiveFiltersForm};

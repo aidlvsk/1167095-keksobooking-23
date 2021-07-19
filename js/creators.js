@@ -1,5 +1,5 @@
 import {getRandomInclusive, getRandomInclusiveFloat, getRandomValue, getRandomLength} from './utils.js';
-import {types, checkin, checkout, featuresArray, photosArray} from './constants.js';
+import {types, checkins, checkouts, featuresArray, photosArray} from './constants.js';
 
 function getZero() {
   const random = getRandomInclusive(1,10);
@@ -25,8 +25,8 @@ function createOffer(location){
     guests: getRandomInclusive(1,Number.MAX_SAFE_INTEGER),
     description: 'Светло и просторно. Что еще надо.',
     type: getRandomValue(types),
-    checkin: getRandomValue(checkin),
-    checkout: getRandomValue(checkout),
+    checkin: getRandomValue(checkins),
+    checkout: getRandomValue(checkouts),
     features: getRandomLength(featuresArray),
     photos: getRandomLength(photosArray),
     address: `${location.lat}, ${location.lng}`,
