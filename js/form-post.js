@@ -1,4 +1,9 @@
 import {POINT_DEFAULT, mainMarker, drawMarkers} from './map.js';
+import { setGuestNumber } from './form-valid.js';
+
+const ESC_CODE = 27;
+const PRICE_PLACEHOLDER = 1000;
+const PRICE_MIN_VALUE = 1000;
 
 const adForm = document.querySelector('.ad-form');
 const filter = document.querySelector('.map__filters');
@@ -20,8 +25,9 @@ const address = document.querySelector('#address');
 const resetForm = () => {
   adForm.reset();
   filter.reset();
-  priceInput.placeholder = 1000;
-  priceInput.min = 1000;
+  setGuestNumber();
+  priceInput.placeholder = PRICE_PLACEHOLDER;
+  priceInput.min = PRICE_MIN_VALUE;
   address.value = `${POINT_DEFAULT.lat}, ${POINT_DEFAULT.lng}`;
 
   drawMarkers();
@@ -37,6 +43,39 @@ clearFormButton.addEventListener('click', (evt) => {
   resetForm();
 });
 
+const handleEsc = (event) => {
+  if(event.keyCode === ESC_CODE) {
+    newError.classList.add('visually-hidden');
+    newSuccess.classList.add('visually-hidden');
+
+    window.removeEventListener('keydown', handleEsc);
+  }
+};
+
+const showError = () => {
+  newError.classList.remove('visually-hidden');
+  window.addEventListener('keydown', handleEsc);
+
+  newError.addEventListener('click', () => {
+    newError.classList.add('visually-hidden');
+    window.removeEventListener('keydown', handleEsc);
+  });
+
+  closeErrorButton.addEventListener('click', () => {
+    newError.classList.add('visually-hidden');
+    window.removeEventListener('keydown', handleEsc);
+  });
+};
+
+const showSuccess = () => {
+  newSuccess.classList.remove('visually-hidden');
+  window.addEventListener('keydown', handleEsc);
+
+  newSuccess.addEventListener('click', () => {
+    newSuccess.classList.add('visually-hidden');
+    window.removeEventListener('keydown', handleEsc);
+  });
+};
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -51,33 +90,13 @@ adForm.addEventListener('submit', (evt) => {
   )
     .then((response) => {
       if(response.ok) {
-        newSuccess.classList.remove('visually-hidden');
+        showSuccess();
         resetForm();
       } else {
         throw new Error(`${response.status} — ${response.statusText}`);
       }
     })
     .catch(() => {
-      newError.classList.remove('visually-hidden');
+      showError();
     });
 });
-
-closeErrorButton.addEventListener('click', () => {
-  newError.classList.add('visually-hidden');
-});
-
-window.addEventListener('keydown', (el) => {
-  if(el.keyCode === 27) {
-    newError.classList.add('visually-hidden');
-    newSuccess.classList.add('visually-hidden');
-  }
-});
-
-newError.addEventListener('click', () => {
-  newError.classList.add('visually-hidden');
-});
-
-newSuccess.addEventListener('click', () => {
-  newSuccess.classList.add('visually-hidden');
-});
-

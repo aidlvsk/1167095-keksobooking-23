@@ -1,5 +1,3 @@
-import {createAdvt} from './creators.js';
-
 const advtTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const typesName = {
@@ -10,8 +8,6 @@ const typesName = {
   hotel: 'Отель',
 };
 
-const similarAdvt = createAdvt();
-
 function createCard(card) {
   const cardElement = advtTemplate.cloneNode(true);
   const allFeatures = cardElement.querySelector('.popup__features');
@@ -20,7 +16,7 @@ function createCard(card) {
     [];
   const photosList = cardElement.querySelector('.popup__photos');
   const photoTemplate = photosList.querySelector('.popup__photo');
-  const all = function(elements) {
+  const generateAll = function(elements) {
     for(let element = 0; element < elements.length ; element++){
       const newPhoto = photoTemplate.cloneNode(true);
       newPhoto.src = elements[element];
@@ -69,7 +65,7 @@ function createCard(card) {
   if(!card.offer.photos || card.offer.photos.length === 0){
     photosList.classList.add('hidden');
   }else {
-    all(card.offer.photos);
+    generateAll(card.offer.photos);
   }
   cardElement.querySelector('.popup__avatar').src = card.author.avatar;
   if(card.author.avatar === '') {
@@ -78,8 +74,6 @@ function createCard(card) {
   return cardElement;
 }
 
-const newCard = createCard(similarAdvt);
-
-export {newCard, createCard};
+export {createCard};
 
 

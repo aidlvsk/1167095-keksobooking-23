@@ -1,5 +1,5 @@
-import './formValid.js';
+import './form-valid.js';
 import './generate.js';
 import './map.js';
-import './formPost.js';
+import './form-post.js';
 import './filters.js';

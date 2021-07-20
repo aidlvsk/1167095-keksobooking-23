@@ -43,7 +43,7 @@ priceInput.addEventListener('input', () => {
   priceInput.reportValidity();
 });
 
-const getGuestNumber = function(){
+const setGuestNumber = function(){
   const roomsNumber = roomNumberInput.value;
   Array.from(guestsNumberInput.children).forEach((element) => {
     if (roomsNumber === '100') {
@@ -67,8 +67,8 @@ const getGuestNumber = function(){
   });
 };
 
-getGuestNumber();
-roomNumberInput.addEventListener('change', getGuestNumber);
+setGuestNumber();
+roomNumberInput.addEventListener('change', setGuestNumber);
 
 typeInput.addEventListener('change', (evt) => {
   priceInput.min = MIN_PRICES[evt.target.value];
@@ -82,3 +82,5 @@ timeInInput.addEventListener('change', () => {
 timeOutInput.addEventListener('change', () => {
   timeInInput.value = timeOutInput.value;
 });
+
+export {setGuestNumber};

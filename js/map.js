@@ -1,5 +1,5 @@
 import {createCard} from './generate.js';
-import {getNoActiveForm, getActiveForm, getActiveFiltersForm} from './formActivation.js';
+import {getNoActiveForm, getActiveForm, getActiveFiltersForm} from './form-activation.js';
 import {getData} from './data.js';
 import {debounce} from './utils/debounce.js';
 import {filterAndSortPoints} from './filters.js';
@@ -13,7 +13,7 @@ const POINT_DEFAULT = {
 
 const formFilter = document.querySelector('.map__filters');
 const address = document.querySelector('#address');
-const errorMap = document.querySelector('.error__message--map');
+const dataError = document.querySelector('.error__message--map');
 
 const map = L.map('map-canvas');
 const pointsGroup = L.layerGroup().addTo(map);
@@ -99,7 +99,7 @@ map
         formFilter.addEventListener('change', drawMarkers);
       })
       .catch(() => {
-        errorMap.classList.remove('visually-hidden');
+        dataError.classList.remove('visually-hidden');
       });
   })
   .setView(POINT_DEFAULT, 10);
